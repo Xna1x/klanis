@@ -23,7 +23,7 @@ const Navbar = () => (
         <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
           <BarChart3 className="text-white" size={24} />
         </div>
-        <span className="text-xl font-extrabold tracking-tight text-brand-dark">E-COM <span className="text-brand-primary">AI</span></span>
+        <span className="text-xl font-extrabold tracking-tight text-brand-dark">Klanis <span className="text-brand-primary">AI</span></span>
       </a>
       <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
         <a href="#features" className="hover:text-brand-primary transition-colors">Преимущества</a>
