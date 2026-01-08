@@ -221,7 +221,7 @@ const App: React.FC = () => {
       <section id="features" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-brand-dark">Почему магазины выбирают E-Com AI</h2>
+            <h2 className="text-4xl font-bold mb-6 text-brand-dark">Почему магазины выбирают Klanis</h2>
             <p className="text-slate-500 text-lg">Мы не просто показываем цифры. Мы даем конкретные инструкции: что закупить больше, а от чего пора избавиться.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -393,10 +393,10 @@ const App: React.FC = () => {
             <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center">
               <BarChart3 className="text-white" size={18} />
             </div>
-            <span className="text-lg font-black text-brand-dark">E-COM <span className="text-brand-primary">AI</span></span>
+            <span className="text-lg font-black text-brand-dark">Klanis <span className="text-brand-primary">AI</span></span>
           </div>
           <div className="text-slate-400 text-sm">
-            © 2024 E-Com AI Analytics. Все права защищены.
+            © 2026 Klanis. Все права защищены.
           </div>
           <div className="flex gap-6 text-sm font-semibold text-slate-500">
             <a href="#" className="hover:text-brand-primary">Политика</a>
