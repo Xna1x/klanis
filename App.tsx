@@ -85,16 +85,17 @@ const App: React.FC = () => {
     `.trim();
 
     try {
-      const response = await fetch(`https://api.telegram.org/bot8066095363:AAEs-Ruk3NqLCmTkCE6LbhvQ3xLguDIyriw/sendMessage`, {
+      // Создаем FormData для отправки файла
+      const formData = new FormData();
+      formData.append('chat_id', '8561435009');
+      formData.append('document', file); // Сам файл
+      formData.append('caption', message); // Подпись к файлу
+      formData.append('parse_mode', 'Markdown');
+
+      const response = await fetch(`https://api.telegram.org/bot8066095363:AAEs-Ruk3NqLCmTkCE6LbhvQ3xLguDIyriw/sendDocument`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: '8561435009',
-          text: message,
-          parse_mode: 'Markdown',
-        }),
+        body: formData,
+        // ВАЖНО: не указываем headers Content-Type при использовании FormData
       });
 
       if (!response.ok) {
