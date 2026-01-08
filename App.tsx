@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -62,27 +61,87 @@ const App: React.FC = () => {
   const [email, setEmail] = useState('');
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+      setError(null);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const sendToTelegram = async () => {
     if (!file || !email) return;
 
+    // Формируем сообщение для Telegram
+    const message = `
+🔥 *НОВАЯ ЗАЯВКА НА АНАЛИЗ*
+
+📧 Email: ${email}
+📁 Файл: ${file.name}
+📊 Размер файла: ${(file.size / 1024).toFixed(2)} KB
+⏰ Время: ${new Date().toLocaleString('ru-RU')}
+    `.trim();
+
+    try {
+      const response = await fetch(`https://api.telegram.org/bot8066095363:AAEs-Ruk3NqLCmTkCE6LbhvQ3xLguDIyriw/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: '8561435009',
+          text: message,
+          parse_mode: 'Markdown',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Ошибка Telegram: ${errorData.description}`);
+      }
+    } catch (err) {
+      console.error('Ошибка отправки в Telegram:', err);
+      throw err;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Валидация
+    if (!file) {
+      setError('Пожалуйста, выберите файл для анализа');
+      return;
+    }
+    
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Пожалуйста, введите корректный email');
+      return;
+    }
+
+    setError(null);
     setUploading(true);
     
-    // Имитация отправки данных на сервер
-    setTimeout(() => {
-      setUploading(false);
+    try {
+      // Отправляем данные в Telegram
+      await sendToTelegram();
+      
+      // Показываем сообщение об успехе
       setSuccess(true);
-      setFile(null);
-      setEmail('');
-    }, 2500);
+      
+      // Сбрасываем форму
+      setTimeout(() => {
+        setFile(null);
+        setEmail('');
+      }, 2000);
+    } catch (err) {
+      setError('Ошибка отправки заявки. Пожалуйста, попробуйте позже.');
+      console.error('Ошибка:', err);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -279,6 +338,12 @@ const App: React.FC = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-14 pr-6 text-lg focus:outline-none focus:ring-2 focus:ring-brand-primary transition-all"
                 />
               </div>
+
+              {error && (
+                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-center">
+                  {error}
+                </div>
+              )}
 
               <button 
                 type="submit"
